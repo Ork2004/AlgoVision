@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.canvas.Canvas?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.zhumagulorken.ui.MainController">
+    <top>
+        <ToolBar>
+            <Button text="Generate" fx:id="generateButton"/>
+            <Button text="Start" fx:id="startButton"/>
+            <ChoiceBox fx:id="algorithmChoice"/>
+            <Slider fx:id="speedSlider" min="1" max="10" value="5"/>
+        </ToolBar>
+    </top>
+
+    <center>
+        <Canvas fx:id="canvas" width="800" height="500"/>
+    </center>
+</BorderPane>
