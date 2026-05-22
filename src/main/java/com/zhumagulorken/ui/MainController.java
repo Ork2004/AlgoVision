@@ -1,6 +1,7 @@
 package com.zhumagulorken.ui;
 
 import com.zhumagulorken.algorithms.BubbleSort;
+import com.zhumagulorken.algorithms.HeapSort;
 import com.zhumagulorken.algorithms.InsertionSort;
 import com.zhumagulorken.algorithms.SortAlgorithm;
 import javafx.fxml.FXML;
@@ -23,7 +24,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        algorithmChoice.getItems().addAll("Bubble Sort", "Insertion Sort");
+        algorithmChoice.getItems().addAll("Bubble Sort", "Insertion Sort", "Heap Sort");
         generateButton.setOnAction(e -> generateArray());
         startButton.setOnAction(e -> startSorting());
         generateArray();
@@ -53,6 +54,7 @@ public class MainController {
         return switch (algo) {
             case "Bubble Sort" -> new BubbleSort();
             case "Insertion Sort" -> new InsertionSort();
+            case "Heap Sort" -> new HeapSort();
             default -> null;
         };
     }
