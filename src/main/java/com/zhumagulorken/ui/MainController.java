@@ -9,6 +9,7 @@ import com.zhumagulorken.algorithms.MergeSort;
 import com.zhumagulorken.algorithms.QuickSort;
 import com.zhumagulorken.algorithms.RadixSort;
 import com.zhumagulorken.algorithms.SelectionSort;
+import com.zhumagulorken.algorithms.ShellSort;
 import com.zhumagulorken.algorithms.SortAlgorithm;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -30,7 +31,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        algorithmChoice.getItems().addAll("Bubble Sort", "Insertion Sort", "Selection Sort", "Heap Sort", "Merge Sort", "Quick Sort", "Counting Sort", "Bucket Sort", "Radix Sort");
+        algorithmChoice.getItems().addAll("Bubble Sort", "Insertion Sort", "Selection Sort", "Heap Sort", "Merge Sort", "Quick Sort", "Counting Sort", "Bucket Sort", "Radix Sort", "Shell Sort");
         generateButton.setOnAction(e -> generateArray());
         startButton.setOnAction(e -> startSorting());
         generateArray();
@@ -67,6 +68,7 @@ public class MainController {
             case "Counting Sort" -> new CountingSort();
             case "Bucket Sort" -> new BucketSort();
             case "Radix Sort" -> new RadixSort();
+            case "Shell Sort" -> new ShellSort();
             default -> null;
         };
     }
