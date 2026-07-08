@@ -16,7 +16,14 @@ AlgoVision is a desktop application built with JavaFX that visualizes sorting al
 |----------------|------------------------|-------------------|
 | Bubble Sort    | O(n^2)                 | O(1)              |
 | Insertion Sort | O(n^2)                 | O(1)              |
+| Selection Sort | O(n^2)                 | O(1)              |
 | Heap Sort      | O(n log n)             | O(1)              |
+| Merge Sort     | O(n log n)             | O(n)              |
+| Quick Sort     | O(n log n)             | O(log n)          |
+| Counting Sort  | O(n + k)               | O(n + k)          |
+| Bucket Sort    | O(n + k)               | O(n + k)          |
+| Radix Sort     | O(d * (n + k))         | O(n + k)          |
+| Shell Sort     | O(n log^2 n)           | O(1)              |
 
 ## Tech stack
 
@@ -34,8 +41,15 @@ src/main/java/com/zhumagulorken/
 └── algorithms/
     ├── SortAlgorithm.java         # Common interface for all algorithms
     ├── BubbleSort.java
+    ├── BucketSort.java
+    ├── CountingSort.java
+    ├── HeapSort.java
     ├── InsertionSort.java
-    └── HeapSort.java
+    ├── MergeSort.java
+    ├── QuickSort.java
+    ├── RadixSort.java
+    ├── SelectionSort.java
+    └── ShellSort.java
 
 src/main/resources/fxml/
 └── main_scene.fxml                # Layout: toolbar with controls + drawing canvas
@@ -66,7 +80,6 @@ Alternatively, open the project in IntelliJ IDEA and run `Main.java` directly.
 
 ## Roadmap
 
-- Merge Sort, Quick Sort
 - Graph algorithms (BFS, Dijkstra, Kruskal)
 - Pathfinding visualization (A*, maze solver)
 - Adjustable sorting speed via the existing slider
