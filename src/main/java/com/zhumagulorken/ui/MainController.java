@@ -1,5 +1,6 @@
 package com.zhumagulorken.ui;
 
+import com.zhumagulorken.algorithms.BinarySearch;
 import com.zhumagulorken.algorithms.BubbleSort;
 import com.zhumagulorken.algorithms.BucketSort;
 import com.zhumagulorken.algorithms.CountingSort;
@@ -37,7 +38,7 @@ public class MainController {
     @FXML
     public void initialize() {
         algorithmChoice.getItems().addAll("Bubble Sort", "Insertion Sort", "Selection Sort", "Heap Sort", "Merge Sort", "Quick Sort", "Counting Sort", "Bucket Sort", "Radix Sort", "Shell Sort");
-        searchChoice.getItems().addAll("Linear Search");
+        searchChoice.getItems().addAll("Linear Search", "Binary Search");
         generateButton.setOnAction(e -> generateArray());
         startButton.setOnAction(e -> startSorting());
         searchButton.setOnAction(e -> startSearching());
@@ -96,6 +97,7 @@ public class MainController {
         String algo = searchChoice.getValue();
         return switch (algo) {
             case "Linear Search" -> new LinearSearch();
+            case "Binary Search" -> new BinarySearch();
             default -> null;
         };
     }
