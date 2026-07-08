@@ -1,6 +1,7 @@
 package com.zhumagulorken.ui;
 
 import com.zhumagulorken.algorithms.BubbleSort;
+import com.zhumagulorken.algorithms.BucketSort;
 import com.zhumagulorken.algorithms.CountingSort;
 import com.zhumagulorken.algorithms.HeapSort;
 import com.zhumagulorken.algorithms.InsertionSort;
@@ -28,7 +29,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        algorithmChoice.getItems().addAll("Bubble Sort", "Insertion Sort", "Selection Sort", "Heap Sort", "Merge Sort", "Quick Sort", "Counting Sort");
+        algorithmChoice.getItems().addAll("Bubble Sort", "Insertion Sort", "Selection Sort", "Heap Sort", "Merge Sort", "Quick Sort", "Counting Sort", "Bucket Sort");
         generateButton.setOnAction(e -> generateArray());
         startButton.setOnAction(e -> startSorting());
         generateArray();
@@ -63,6 +64,7 @@ public class MainController {
             case "Merge Sort" -> new MergeSort();
             case "Quick Sort" -> new QuickSort();
             case "Counting Sort" -> new CountingSort();
+            case "Bucket Sort" -> new BucketSort();
             default -> null;
         };
     }
