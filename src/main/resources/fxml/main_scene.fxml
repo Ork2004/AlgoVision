@@ -13,6 +13,10 @@
             <Button text="Start" fx:id="startButton"/>
             <ChoiceBox fx:id="algorithmChoice"/>
             <Slider fx:id="speedSlider" min="1" max="10" value="5"/>
+            <Separator orientation="VERTICAL"/>
+            <ChoiceBox fx:id="searchChoice"/>
+            <TextField fx:id="targetField" promptText="Target value"/>
+            <Button text="Search" fx:id="searchButton"/>
         </ToolBar>
     </top>
 
