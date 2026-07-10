@@ -1,6 +1,7 @@
 package com.zhumagulorken.ui;
 
 import com.zhumagulorken.algorithms.BFSPathfinder;
+import com.zhumagulorken.algorithms.DijkstraPathfinder;
 import com.zhumagulorken.algorithms.PathfindingAlgorithm;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -18,7 +19,9 @@ public class PathfindingController {
     private static final int COLS = 32;
     private static final double CELL_SIZE = 25;
 
-    private enum CellState { EMPTY, WALL, START, END }
+    private enum CellState { EMPTY, WALL, WEIGHT, START, END }
+
+    private static final int WEIGHT_COST = 5;
 
     @FXML private Canvas gridCanvas;
     @FXML private Button clearButton, startButton;
@@ -33,9 +36,9 @@ public class PathfindingController {
 
     @FXML
     public void initialize() {
-        cellModeChoice.getItems().addAll("Wall", "Start", "End");
+        cellModeChoice.getItems().addAll("Wall", "Weight", "Start", "End");
         cellModeChoice.setValue("Wall");
-        pathAlgorithmChoice.getItems().addAll("BFS");
+        pathAlgorithmChoice.getItems().addAll("BFS", "Dijkstra");
         pathAlgorithmChoice.setValue("BFS");
 
         clearButton.setOnAction(e -> resetGrid());
@@ -74,20 +77,24 @@ public class PathfindingController {
                 end = new int[]{row, col};
                 grid[row][col] = CellState.END;
             }
-            default -> {
-                if (grid[row][col] == CellState.EMPTY) {
-                    grid[row][col] = CellState.WALL;
-                } else if (grid[row][col] == CellState.WALL) {
-                    grid[row][col] = CellState.EMPTY;
-                }
-            }
+            case "Weight" -> paintCell(row, col, CellState.WEIGHT);
+            default -> paintCell(row, col, CellState.WALL);
         }
         draw();
+    }
+
+    private void paintCell(int row, int col, CellState target) {
+        if (grid[row][col] == target) {
+            grid[row][col] = CellState.EMPTY;
+        } else if (grid[row][col] != CellState.START && grid[row][col] != CellState.END) {
+            grid[row][col] = target;
+        }
     }
 
     private PathfindingAlgorithm getSelectedAlgorithm() {
         return switch (pathAlgorithmChoice.getValue()) {
             case "BFS" -> new BFSPathfinder();
+            case "Dijkstra" -> new DijkstraPathfinder();
             default -> null;
         };
     }
@@ -96,10 +103,14 @@ public class PathfindingController {
         PathfindingAlgorithm algorithm = getSelectedAlgorithm();
         if (algorithm == null) return;
 
-        boolean[][] walls = new boolean[ROWS][COLS];
+        int[][] cost = new int[ROWS][COLS];
         for (int r = 0; r < ROWS; r++)
             for (int c = 0; c < COLS; c++)
-                walls[r][c] = grid[r][c] == CellState.WALL;
+                cost[r][c] = switch (grid[r][c]) {
+                    case WALL -> 0;
+                    case WEIGHT -> WEIGHT_COST;
+                    default -> 1;
+                };
 
         visited = new boolean[ROWS][COLS];
         path = new boolean[ROWS][COLS];
@@ -109,7 +120,7 @@ public class PathfindingController {
 
         new Thread(() -> {
             try {
-                List<int[]> foundPath = algorithm.findPath(walls, searchStart, searchEnd, (row, col) -> {
+                List<int[]> foundPath = algorithm.findPath(cost, searchStart, searchEnd, (row, col) -> {
                     visited[row][col] = true;
                     javafx.application.Platform.runLater(this::draw);
                 });
@@ -140,6 +151,7 @@ public class PathfindingController {
         if (state == CellState.WALL) return Color.rgb(40, 40, 40);
         if (path[row][col]) return Color.GOLD;
         if (visited[row][col]) return Color.LIGHTBLUE;
+        if (state == CellState.WEIGHT) return Color.SANDYBROWN;
         return Color.WHITESMOKE;
     }
 }

@@ -3,9 +3,9 @@ package com.zhumagulorken.algorithms;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
+import java.util.PriorityQueue;
 
-public class BFSPathfinder implements PathfindingAlgorithm {
+public class DijkstraPathfinder implements PathfindingAlgorithm {
     private static final int[][] DIRECTIONS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
     @Override
@@ -13,34 +13,44 @@ public class BFSPathfinder implements PathfindingAlgorithm {
         int rows = cost.length;
         int cols = cost[0].length;
 
-        boolean[][] visited = new boolean[rows][cols];
+        int[][] distance = new int[rows][cols];
+        for (int[] row : distance) Arrays.fill(row, Integer.MAX_VALUE);
         int[][] parentRow = new int[rows][cols];
         int[][] parentCol = new int[rows][cols];
         for (int[] row : parentRow) Arrays.fill(row, -1);
         for (int[] row : parentCol) Arrays.fill(row, -1);
+        boolean[][] settled = new boolean[rows][cols];
 
-        Queue<int[]> queue = new LinkedList<>();
-        queue.add(start);
-        visited[start[0]][start[1]] = true;
+        distance[start[0]][start[1]] = 0;
+        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+        queue.add(new int[]{start[0], start[1], 0});
 
         while (!queue.isEmpty()) {
             int[] current = queue.poll();
-            onVisit.visit(current[0], current[1]);
+            int r = current[0], c = current[1];
+            if (settled[r][c]) continue;
+            settled[r][c] = true;
+            onVisit.visit(r, c);
             Thread.sleep(20);
 
-            if (current[0] == end[0] && current[1] == end[1]) {
+            if (r == end[0] && c == end[1]) {
                 return reconstructPath(parentRow, parentCol, start, end);
             }
 
             for (int[] dir : DIRECTIONS) {
-                int nr = current[0] + dir[0];
-                int nc = current[1] + dir[1];
-                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols
-                        && cost[nr][nc] > 0 && !visited[nr][nc]) {
-                    visited[nr][nc] = true;
-                    parentRow[nr][nc] = current[0];
-                    parentCol[nr][nc] = current[1];
-                    queue.add(new int[]{nr, nc});
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+                if (nr < 0 || nr >= rows || nc < 0 || nc >= cols
+                        || cost[nr][nc] <= 0 || settled[nr][nc]) {
+                    continue;
+                }
+
+                int newDistance = distance[r][c] + cost[nr][nc];
+                if (newDistance < distance[nr][nc]) {
+                    distance[nr][nc] = newDistance;
+                    parentRow[nr][nc] = r;
+                    parentCol[nr][nc] = c;
+                    queue.add(new int[]{nr, nc, newDistance});
                 }
             }
         }
